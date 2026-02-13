@@ -61,4 +61,10 @@ public class PlayerInput : MonoBehaviour
         //realtime lights are more performance heavy but work with dynamic objects
         //the higher the intensity value te more it bounces off other surfaces
     }
+    public void ChangeMouseSens(float m)
+    {
+        Debug.Log($"Mouse Sensitivity changed - {m}");
+        //not shown in inspector
+        mouseSens = m; rotationSpeed = m;
+    }
 }
