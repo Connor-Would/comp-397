@@ -10,7 +10,7 @@ public class PlayerInput : MonoBehaviour
     private float camRotation;
     private Vector3 velocity;
     [SerializeField] private float maxSpeed = 10.0f;
-    [SerializeField] private float gravity = -5.0f;
+    [SerializeField] private float gravity = -0.01f;
     [SerializeField] private float rotationSpeed = 4.0f;
     [SerializeField] private float mouseSens = 5.0f;
     [SerializeField, Self] private CharacterController controller;
@@ -46,9 +46,6 @@ public class PlayerInput : MonoBehaviour
 
         transform.Rotate(Vector3.up, readLook.x * rotationSpeed * Time.deltaTime);
         
-        mouseSens *= readLook.y;
-        mouseSens = Mathf.Clamp(mouseSens, -90f, 90f);
-        cam.gameObject.transform.localRotation = Quaternion.Euler(mouseSens, 0, 0);
         //*-1 also works (but need a += instead of -=)
         camRotation -= mouseSens * readLook.y * Time.deltaTime;
         camRotation = Mathf.Clamp(camRotation, -90f, 90f); //values can be smaller
@@ -64,7 +61,7 @@ public class PlayerInput : MonoBehaviour
     public void ChangeMouseSens(float m)
     {
         Debug.Log($"Mouse Sensitivity changed - {m}");
-        //not shown in inspector
+          //not shown in inspector
         mouseSens = m; rotationSpeed = m;
     }
 }
