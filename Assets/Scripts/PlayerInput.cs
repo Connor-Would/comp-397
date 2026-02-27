@@ -7,6 +7,7 @@ public class PlayerInput : MonoBehaviour
 {
     private InputAction move;
     private InputAction look;
+    private InputAction jump;
     private float camRotation;
     private Vector3 velocity;
     [SerializeField] private float maxSpeed = 10.0f;
@@ -15,11 +16,15 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float mouseSens = 5.0f;
     [SerializeField, Self] private CharacterController controller;
     [SerializeField, Child] private Camera cam;
+    [SerializeField, Scene] private AudioController audioController;
     private void OnValidate() {this.ValidateRefs();}
+    private void OnDisable(){jump.started -= Jump;}
     void Start()
     {
         move = InputSystem.actions.FindAction("Player/Move");
         look = InputSystem.actions.FindAction("Player/Look");
+        jump = InputSystem.actions.FindAction("Player/Jump");
+        jump.started += Jump;
         // controller = GetComponent<CharacterController>();
         // if (controller == null)
             // controller = gameObject.AddComponent<CharacterController>();
@@ -63,5 +68,9 @@ public class PlayerInput : MonoBehaviour
         Debug.Log($"Mouse Sensitivity changed - {m}");
           //not shown in inspector
         mouseSens = m; rotationSpeed = m;
+    }
+    private void Jump(InputAction.CallbackContext context)
+    {
+        audioController.PlayJumpSFX();
     }
 }

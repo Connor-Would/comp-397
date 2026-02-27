@@ -8,7 +8,7 @@ using System.Linq;
 public class NPCMovement : MonoBehaviour
 {
     private int i;
-    [SerializeField] private NavMeshAgent agent;
+    [SerializeField, Self] private NavMeshAgent agent;
     [SerializeField] private List<GameObject> waypoints = new List<GameObject>();
     private Vector3 destination;
     void OnValidate(){this.ValidateRefs();}
@@ -19,13 +19,28 @@ public class NPCMovement : MonoBehaviour
         agent.destination =
         destination = waypoints[i].transform.position;
     }
-
     void Update()
     {
         if (waypoints.Count < 0) return;
-        if (Vector3.Distance(transform.position, destination) < 1f)
+        if (Vector3.Distance(transform.position, destination) < 3f)
         {
             i = (i + 1) % waypoints.Count;
+            destination = waypoints[i].transform.position;
+            agent.destination = destination;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            destination = other.transform.position;
+            agent.destination = destination;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
             destination = waypoints[i].transform.position;
             agent.destination = destination;
         }
