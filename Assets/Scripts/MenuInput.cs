@@ -6,18 +6,16 @@ public class MenuInput : MonoBehaviour
 {
  private InputAction openMenu;
  [SerializeField] private GameObject menuPanel;
- //[SerializeField] private Slider mouseSensSlider;
  [SerializeField] private bool isMenu;
   void Start()
     {
         openMenu = InputSystem.actions.FindAction("UI/Menu");
         openMenu.started += ToggleMenu;
-        //mouseSensSlider.onValueChanged.AddListener(delegate {OnValueChanged(mouseSensSlider.value);});
+
     }
     private void OnDisable()
     {
         openMenu.started -= ToggleMenu;
-        //mouseSensSlider.onValueChanged.RemoveListener(delegate {OnValueChanged(mouseSensSlider.value);});
     }
     private void ToggleMenu(InputAction.CallbackContext context)
     {

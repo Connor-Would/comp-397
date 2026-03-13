@@ -16,25 +16,18 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float mouseSens = 5.0f;
     [SerializeField, Self] private CharacterController controller;
     [SerializeField, Child] private Camera cam;
-    [SerializeField, Scene] private AudioController audioController;
-    private void OnValidate() {this.ValidateRefs();}
-    private void OnDisable(){jump.started -= Jump;}
+    private void OnValidate() => this.ValidateRefs();
+    private void OnDisable() => jump.started -= Jump;
     void Start()
     {
         move = InputSystem.actions.FindAction("Player/Move");
         look = InputSystem.actions.FindAction("Player/Look");
         jump = InputSystem.actions.FindAction("Player/Jump");
         jump.started += Jump;
-        // controller = GetComponent<CharacterController>();
-        // if (controller == null)
-            // controller = gameObject.AddComponent<CharacterController>();
-        //adds a CharacterController component if one does not already exist when the game starts
-        //not effective if you have multiple scripts trying to add the component at once
-        //not needed with Self attribute and ValidateRefs method
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    // Update is called once per frame
     void Update()
     {
         Vector2 readMove = move.ReadValue<Vector2>();
@@ -42,35 +35,23 @@ public class PlayerInput : MonoBehaviour
         Vector3 movement = transform.right * readMove.x
         + transform.forward * readMove.y;
 
-        //controller.Move(movement * maxSpeed * Time.deltaTime);
         velocity.y += gravity * Time.deltaTime;
-        //controller.Move(velocity * Time.deltaTime);
         movement *= maxSpeed * Time.deltaTime;
         movement += velocity;
         controller.Move(movement);
 
         transform.Rotate(Vector3.up, readLook.x * rotationSpeed * Time.deltaTime);
         
-        //*-1 also works (but need a += instead of -=)
         camRotation -= mouseSens * readLook.y * Time.deltaTime;
-        camRotation = Mathf.Clamp(camRotation, -90f, 90f); //values can be smaller
+        camRotation = Mathf.Clamp(camRotation, -90f, 90f);
         cam.gameObject.transform.localRotation = Quaternion.Euler(camRotation, 0, 0);
-        //directional light = sun (entire scene)
-        //point light = lamp (circle)
-        //spot light = flashlight (cone)
-        //area light = tv (rectangle) baked only
-        //bake the light calculation in the scene prior to see its effect
-        //realtime lights are more performance heavy but work with dynamic objects
-        //the higher the intensity value te more it bounces off other surfaces
     }
     public void ChangeMouseSens(float m)
     {
-        Debug.Log($"Mouse Sensitivity changed - {m}");
-          //not shown in inspector
         mouseSens = m; rotationSpeed = m;
     }
     private void Jump(InputAction.CallbackContext context)
     {
-        audioController.PlayJumpSFX();
+        AudioController.Instance.PlayJumpSFX();
     }
 }

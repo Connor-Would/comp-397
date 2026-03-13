@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-
-public class AudioController : MonoBehaviour
+public class AudioController : PersistentSingleton<AudioController>
 {
     [SerializeField] private AudioClip backgroundMusic;
     [SerializeField] private AudioClip jumpSFX;
@@ -12,9 +11,7 @@ public class AudioController : MonoBehaviour
     
     private IEnumerator Start()
     {
-        Debug.Log("AudioController Start"); //the small sphere in the audio souruce is where max volume is played
         yield return new WaitForSeconds(4f); // Wait a moment to ensure all components are initialized
-        Debug.Log("Playing background music");
         PlayBackgroundMusic();
     }
     public void PlayJumpSFX()
