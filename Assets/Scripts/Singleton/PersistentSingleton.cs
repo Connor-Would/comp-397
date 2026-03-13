@@ -19,7 +19,7 @@ public abstract class PersistentSingleton<T> : MonoBehaviour where T : Component
             return instance;
         }
     }
-    protected virtual void Awake(){ InitialiseSingleton(); }
+    protected virtual void Awake() => InitialiseSingleton();
     protected virtual void InitialiseSingleton()
     {
         if (instance == null)

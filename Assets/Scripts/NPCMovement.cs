@@ -16,7 +16,7 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private NPCStates currentState = NPCStates.Patrol;
     [SerializeField] private Transform player;
     private Vector3 destination;
-    void OnValidate(){this.ValidateRefs();}
+    void OnValidate() => this.ValidateRefs();
     void Start()
     {
         waypoints = GameObject.FindGameObjectsWithTag("Waypoint").ToList();
@@ -43,7 +43,6 @@ public class NPCMovement : MonoBehaviour
             default:
                 break;
         }
-        
     }
     private void OnTriggerStay(Collider other)
     {
