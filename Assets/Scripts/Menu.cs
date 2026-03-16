@@ -1,14 +1,27 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-public class Menu : MonoBehaviour
+using UnityEngine.UI;
+//build and run will run it's own web server
+public class Menu : PersistentSingleton<Menu>
 {
-    public void StartPlayGameAdditive()
+    [SerializeField] private Button saveBtn;
+    [SerializeField] private Button loadBtn;
+    private void Start()
     {
-        SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
+        saveBtn.onClick.AddListener(()=>
+        {
+            SaveLoadSystem.Instance.gameData.fileName = "Menu";
+            SaveLoadSystem.Instance.gameData.sceneName = "SampleScene";
+            SaveLoadSystem.Instance.Save();
+        });
+        loadBtn.onClick.AddListener(()=>SaveLoadSystem.Instance.Load("Menu"));
     }
-    public void StartPlayGameSingle()
-    {
-        SceneManager.LoadScene("SampleScene");
-    }
+    // public void StartPlayGameAdditive()
+    // {
+    //     SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
+    // }
+    // public void StartPlayGameSingle()
+    // {
+    //     SceneManager.LoadScene("SampleScene");
+    // }
 }
